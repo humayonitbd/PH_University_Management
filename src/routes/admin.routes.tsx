@@ -19,7 +19,7 @@ type TSidebarItem = {
 const adminPaths = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "dashboard",
     element: <AdminDashboard />,
   },
   {
@@ -27,17 +27,17 @@ const adminPaths = [
     children: [
       {
         name: "Create Admin",
-        path: "/create-admin",
+        path: "create-admin",
         element: <CreateAdmin />,
       },
       {
         name: "Create Faculty",
-        path: "/create-faculty",
+        path: "create-faculty",
         element: <CreateFaculty />,
       },
       {
         name: "Create Student",
-        path: "/create-student",
+        path: "create-student",
         element: <CreateStudent />,
       },
     ],
