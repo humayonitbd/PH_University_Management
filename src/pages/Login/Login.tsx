@@ -3,21 +3,32 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const Login = () => {
   const {register, handleSubmit} = useForm();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log("location", location);
+  console.log("state", location.state);
+  console.log("path", location.state?.from?.pathname);
 
   const [login,{ isError}] = useLoginMutation();
+
   const onSubmit = async(data:any) => {
     const userInfo = {
       id:data.id,
       password:data.password,
     }
-    console.log(data)
+    
    const res = await login(userInfo).unwrap();
-   dispatch(setUser({user:{}, token:res?.data?.accessToken}))
+   const user = verifyToken(res?.data?.accessToken);
+   dispatch(setUser({ user: user, token: res?.data?.accessToken }));
+    navigate(from, { replace: true });
   };
 
 
