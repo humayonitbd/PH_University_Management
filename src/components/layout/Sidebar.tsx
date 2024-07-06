@@ -3,6 +3,10 @@ import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { NavLink } from "react-router-dom";
+
 
 const userRole = {
     ADMIN: 'admin',
@@ -13,10 +17,12 @@ const userRole = {
 const { Sider } = Layout;
 const Sidebar = () => {
 
-    const role = 'faculty';
+  const user = useAppSelector(selectCurrentUser);
+  
+    
     let sidebarItems;
 
-    switch (role) {
+    switch (user?.role) {
         case userRole.ADMIN:
             sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
             break;
@@ -52,7 +58,9 @@ const Sidebar = () => {
             alignItems: "center",
           }}
         >
-          <h1>PH UNI</h1>
+          <NavLink to='/'>
+            <h1 style={{color:'white'}}>PH UNI</h1>
+          </NavLink>
         </div>
         <Menu
           theme="dark"

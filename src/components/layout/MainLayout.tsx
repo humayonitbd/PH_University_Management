@@ -1,17 +1,26 @@
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { useAppDispatch } from "../../redux/hooks";
+import { logOut } from "../../redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 
 
-const { Header, Footer, Content } = Layout;
+const { Header,  Content } = Layout;
 
 const MainLayout = () => {
+  const dispatch = useAppDispatch();
+  const handleLogout =()=>{
+    const tostId = toast.loading('logOut lodding!!')
+    dispatch(logOut());
+    toast.success('logOut Successfull !!',{id:tostId})
+  }
   return (
     <Layout style={{ height: "100vh" }}>
       <Sidebar />
       <Layout>
-        <Header style={{ padding: 0 }} />
+       <Header > <Button onClick={handleLogout}>LogOut</Button></Header>
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
@@ -22,9 +31,6 @@ const MainLayout = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
