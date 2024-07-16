@@ -12,7 +12,7 @@ const AcademicFaculty = () => {
     isLoading,
     isFetching,
   } = useGetAcademicFacultiesQuery(undefined);
-  console.log("Academic Semister", academicFaculty);
+  // console.log("Academic Semister", academicFaculty);
   
     const tableData = academicFaculty?.data?.map(
       ({ _id, name}) => ({

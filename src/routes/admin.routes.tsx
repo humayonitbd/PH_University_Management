@@ -7,9 +7,9 @@ import CreateAcademicDepartment from "../pages/Admin/AcademicManagement/CreateAc
 import CreateAcademicFaculty from "../pages/Admin/AcademicManagement/CreateAcademicFaculty/CreateAcademicFaculty";
 import CreateAcademicSemister from "../pages/Admin/AcademicManagement/CreateAcademicSemister/CreateAcademicSemister";
 import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
-import CreateAdmin from "../pages/Admin/CreateAdmin/CreateAdmin";
-import CreateFaculty from "../pages/Admin/CreateFaculty/CreateFaculty";
-import CreateStudent from "../pages/Admin/CreateStudent/CreateStudent";
+import CreateAdmin from "../pages/Admin/UserManagement/CreateAdmin/CreateAdmin";
+import CreateFaculty from "../pages/Admin/UserManagement/CreateFaculty/CreateFaculty";
+import CreateStudent from "../pages/Admin/UserManagement/CreateStudent/CreateStudent";
 // import { NavLink } from "react-router-dom";
 
 // type TRoute = {

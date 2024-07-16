@@ -32,7 +32,7 @@ const CreateAcademicSemister = () => {
       endMonth: data.endMonth,
     };
     try {
-      console.log(semisterData);
+      // console.log(semisterData);
       const res = (await addAcademicSemister(semisterData)) as TResponse<TAcademicSemister>;
       if (res?.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
