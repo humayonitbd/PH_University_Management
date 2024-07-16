@@ -17,7 +17,7 @@ const MainLayout = () => {
     toast.success('logOut Successfull !!',{id:tostId})
   }
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100%" }}>
       <Sidebar />
       <Layout>
        <Header > <Button onClick={handleLogout}>LogOut</Button></Header>
