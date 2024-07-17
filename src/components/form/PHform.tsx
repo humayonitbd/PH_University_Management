@@ -14,7 +14,7 @@ type TFormConfig = {
 };
 
 type TFormProps = {
-  onSubmit: SubmitHandler<any>;
+  onSubmit?: SubmitHandler<any> | undefined;
   children: ReactNode;
 } & TFormConfig;
 
