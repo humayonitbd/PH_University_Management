@@ -1,42 +1,53 @@
-import { Button, Pagination, Space, Table, TableColumnsType, TableProps } from "antd";
-import { useGetAllSemestersQuery } from "../../../../redux/features/admin/AcademicManagementApi/AcademicManagementApi";
-import { TAcademicSemister } from "../../../../types/academicManagement.type";
+
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps,
+} from "antd";
 import { useState } from "react";
 import { TQueryParams } from "../../../../types";
 import { TStudent } from "../../../../types/userManagement.type";
-import { useGetAllStudentsQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
+import { useGetAllFacultysQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Link } from "react-router-dom";
 
-export type TTableData = Pick<TStudent, "fullName" | "id" | "email" | "contactNo" | "_id">;
-const Students = () => {
+export type TTableData = Pick<
+  TStudent,
+  "name" | "id" | "email" | "contactNo" | "_id"
+>;
+const Facultys = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
-  const [page,setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const {
-    data: students,
+    data: facultys,
     isLoading,
     isFetching,
-  } = useGetAllStudentsQuery([
+  } = useGetAllFacultysQuery([
     { name: "page", value: page },
     { name: "sort", value: "id" },
     ...params,
   ]);
   // console.log("Academic Semister", students);
 
-  const totalData = students?.meta;
+  const totalData = facultys?.meta;
 
-  const tableData = students?.data?.map(({ _id, fullName, id, email,contactNo }) => ({
-    key: _id,
-    _id,
-    fullName,
-    id,
-    email,
-    contactNo
-  }));
+  const tableData = facultys?.data?.map(
+    ({ _id, name, id, email, contactNo }) => ({
+      key: _id,
+      _id,
+      name:`${name.firstName} ${name.middleName} ${name.lastName}`,
+      id,
+      email,
+      contactNo,
+    })
+  );
 
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
-      dataIndex: "fullName",
+      dataIndex: "name",
     },
     {
       title: "ID",
@@ -57,10 +68,10 @@ const Students = () => {
         console.log(record);
         return (
           <Space>
-            <Link to={`/admin/student-data-list/${record._id}`}>
+            <Link to={`/admin/faculty-data-list/${record._id}`}>
               <Button>Details</Button>
             </Link>
-            <Link to={`/admin/student-update/${record._id}`}>
+            <Link to={`/admin/faculty-update/${record._id}`}>
               <Button>Update</Button>
             </Link>
             <Button>Block</Button>
@@ -83,11 +94,9 @@ const Students = () => {
     //   filters?.name?.forEach((item) =>
     //     queryParam.push({ name: "name", value: item })
     //   );
-
     //   filters?.year?.forEach((item) =>
     //     queryParam.push({ name: "year", value: item })
     //   );
-
     //   setParams(queryParam);
     // }
   };
@@ -106,9 +115,13 @@ const Students = () => {
         showSorterTooltip={{ target: "sorter-icon" }}
         pagination={false}
       />
-      <Pagination pageSize={totalData?.limit} onChange={(value)=> setPage(value)} total={totalData?.total} />
+      <Pagination
+        pageSize={totalData?.limit}
+        onChange={(value) => setPage(value)}
+        total={totalData?.total}
+      />
     </>
   );
 };
 
-export default Students;
+export default Facultys;

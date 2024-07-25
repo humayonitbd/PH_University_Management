@@ -11,7 +11,7 @@ export const routeGenerator = (items: TUserPath[]) => {
       });
     }
 
-    if (item.children) {
+    if (item.children ) {
       item.children.forEach((child) => {
         acc.push({
           path: child.path!,

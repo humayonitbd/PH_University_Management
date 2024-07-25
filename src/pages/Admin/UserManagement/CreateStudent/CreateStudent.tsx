@@ -7,6 +7,9 @@ import { bloodGroupOptions, genderOptions } from "../../../../constants/global";
 import PHDatePicker from "../../../../components/form/PHDatePicker";
 import { useGetAcademicDepartmentsQuery, useGetAllSemestersQuery } from "../../../../redux/features/admin/AcademicManagementApi/AcademicManagementApi";
 import { useAddStudentMutation } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
+import { toast } from "sonner";
+import { TResponse } from "../../../../types";
+import { TStudent } from "../../../../types/userManagement.type";
 
 
 
@@ -91,7 +94,7 @@ const CreateStudent = () => {
   const [addStudentData, {data, error}] = useAddStudentMutation();
   console.log(data, error)
     const {data:sData, isLoading:issLoading} = useGetAllSemestersQuery(undefined);
-    const {data:dData, isLoading} = useGetAcademicDepartmentsQuery(undefined,{skip:issLoading});
+    const {data:dData} = useGetAcademicDepartmentsQuery(undefined,{skip:issLoading});
 
     const semesterOptions = sData?.data?.map((item)=>({
         value:item._id,
@@ -102,7 +105,8 @@ const CreateStudent = () => {
       label: `${item.name}`,
     }));
 
-    const onSubmit: SubmitHandler<FieldValues> =(data)=>{
+    const onSubmit: SubmitHandler<FieldValues> = async(data)=>{
+       const toastId = toast.loading("Creating ...");
         console.log(data);
         const studentData = {
           password:'student123',
@@ -111,7 +115,20 @@ const CreateStudent = () => {
         const formData = new FormData();
         formData.append("data", JSON.stringify(studentData));
         formData.append("file", data.profileImg);
-        addStudentData(formData);
+        // addStudentData(formData);
+        try {
+          console.log(studentData);
+          const res = (await addStudentData(formData)) as TResponse<TStudent>;
+          console.log(res);
+          if (res?.error) {
+            toast.error(res?.error?.data?.message, { id: toastId });
+          } else {
+            toast.success(res?.data?.message, { id: toastId });
+          }
+          console.log(res);
+        } catch (error: any) {
+          toast.error("Something went wrong", { id: toastId });
+        }
 
         console.log(Object.entries(formData))
     }

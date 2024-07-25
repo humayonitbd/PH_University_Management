@@ -9,8 +9,12 @@ import CreateAcademicSemister from "../pages/Admin/AcademicManagement/CreateAcad
 import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
 import CreateAdmin from "../pages/Admin/UserManagement/CreateAdmin/CreateAdmin";
 import CreateFaculty from "../pages/Admin/UserManagement/CreateFaculty/CreateFaculty";
+import FacultyDetails from "../pages/Admin/UserManagement/CreateFaculty/FacultyDetails";
+import FacultyUpdate from "../pages/Admin/UserManagement/CreateFaculty/FacultyUpdate";
+import Facultys from "../pages/Admin/UserManagement/CreateFaculty/Facultys";
 import CreateStudent from "../pages/Admin/UserManagement/CreateStudent/CreateStudent";
 import StudentDetails from "../pages/Admin/UserManagement/CreateStudent/StudentDetails";
+import StudentUpdate from "../pages/Admin/UserManagement/CreateStudent/StudentUpdate";
 import Students from "../pages/Admin/UserManagement/CreateStudent/Students";
 // import { NavLink } from "react-router-dom";
 
@@ -84,14 +88,31 @@ export const adminPaths = [
         element: <StudentDetails />,
       },
       {
-        name: "Create Admin",
-        path: "create-admin",
-        element: <CreateAdmin />,
+        path: "student-update/:studentId",
+        element: <StudentUpdate />,
       },
       {
         name: "Create Faculty",
         path: "create-faculty",
         element: <CreateFaculty />,
+      },
+      {
+        name: "Faculty",
+        path: "faculty-data-list",
+        element: <Facultys />,
+      },
+      {
+        path: "faculty-data-list/:facultyId",
+        element: <FacultyDetails />,
+      },
+      {
+        path: "faculty-update/:facultyId",
+        element: <FacultyUpdate />,
+      },
+      {
+        name: "Create Admin",
+        path: "create-admin",
+        element: <CreateAdmin />,
       },
     ],
   },

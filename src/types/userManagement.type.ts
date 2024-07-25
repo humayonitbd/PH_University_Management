@@ -62,6 +62,80 @@ export type TLocalGurdian = {
 }
 
 
+/// faculty type here 
+
+export interface TFaculty {
+  _id: string;
+  id: string;
+  user: string;
+  name: Name;
+  designation: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  presentAddress: string;
+  permanentAddress: string;
+  profileImg: string;
+  academicFaculty: AcademicFaculty;
+  academicDepartment: AcademicDepartment;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Name {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  _id: string;
+}
+
+export interface AcademicFaculty {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface AcademicDepartment {
+  _id: string;
+  name: string;
+  academicFaculty: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+// admin type here 
+export type TAdmin = {
+  _id: string;
+  id: string;
+  user: string;
+  name: TAName;
+  designation: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  presentAddress: string;
+  permanentAddress: string;
+  profileImg: string;
+  managementDepartment: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TAName ={
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  _id: string;
+}
 
 
 
