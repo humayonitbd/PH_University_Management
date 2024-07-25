@@ -1,4 +1,3 @@
-
 import {
   Button,
   Pagination,
@@ -9,35 +8,35 @@ import {
 } from "antd";
 import { useState } from "react";
 import { TQueryParams } from "../../../../types";
-import { TFaculty, TStudent } from "../../../../types/userManagement.type";
-import { useGetAllFacultysQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
+import { TAdmin } from "../../../../types/userManagement.type";
+import { useGetAllAdminsQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Link } from "react-router-dom";
 
 export type TTableData = Pick<
-  TFaculty,
+  TAdmin,
   "name" | "id" | "email" | "contactNo" | "_id"
 >;
-const Facultys = () => {
+const Admins = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
   const [page, setPage] = useState(1);
   const {
-    data: facultys,
+    data: admins,
     isLoading,
     isFetching,
-  } = useGetAllFacultysQuery([
+  } = useGetAllAdminsQuery([
     { name: "page", value: page },
     { name: "sort", value: "id" },
     ...params,
   ]);
   // console.log("Academic Semister", students);
 
-  const totalData = facultys?.meta;
+  const totalData = admins?.meta;
 
-  const tableData = facultys?.data?.map(
+  const tableData = admins?.data?.map(
     ({ _id, name, id, email, contactNo }) => ({
       key: _id,
       _id,
-      name:`${name.firstName} ${name.middleName} ${name.lastName}`,
+      name: `${name.firstName} ${name.middleName} ${name.lastName}`,
       id,
       email,
       contactNo,
@@ -68,10 +67,10 @@ const Facultys = () => {
         console.log(record);
         return (
           <Space>
-            <Link to={`/admin/faculty-data-list/${record._id}`}>
+            <Link to={`/admin/admin-data-list/${record._id}`}>
               <Button>Details</Button>
             </Link>
-            <Link to={`/admin/faculty-update/${record._id}`}>
+            <Link to={`/admin/admin-update/${record._id}`}>
               <Button>Update</Button>
             </Link>
             <Button>Block</Button>
@@ -124,4 +123,4 @@ const Facultys = () => {
   );
 };
 
-export default Facultys;
+export default Admins;
