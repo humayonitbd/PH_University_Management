@@ -14,45 +14,58 @@ import { useParams } from "react-router-dom";
 
 const FacultyUpdate = () => {
     const { facultyId } = useParams();
-    const { data } = useGetSingleFacultyQuery(facultyId);
-    console.log(data?.data)
-  const [updateFacultyData] = useUpdateFacultyMutation();
-  
+    const { data:facultySingleData } = useGetSingleFacultyQuery(facultyId);
+    console.log("faculty single data", facultySingleData?.data?.dateOfBirth);
+  const [updateFacultyData,{data}] = useUpdateFacultyMutation();
+  console.log('update hoar por data', data)
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data,'data')
+    // console.log(data,'data')
     const toastId = toast.loading("Creating ...");
-    const facultyData = {
-      faculty: data,
+    const upFacultyData = {
+      name: data.name,
+      gender: data.gender,
+      designation: data.designation,
+      dateOfBirth: data.dateOfBirth,
+      email: data.email,
+      contactNo: data.contactNo,
+      emergencyContactNo: data.emergencyContactNo,
+      presentAddress: data.presentAddress,
+      permanentAddress: data.permanentAddress,
     };
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(facultyData));
-    formData.append("file", data.profileImg);
+    const facultyData = {
+      faculty: upFacultyData,
+    };
+
+    console.log('facultyData', facultyData);
 
     try {
-      console.log(facultyData);
-      const res = (await updateFacultyData({
-        id: facultyId,
-        formData,
-      })) as TResponse<TFaculty>;
-      console.log(res);
+      // console.log(facultyData, 'file', data.profileImg);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(facultyData));
+      if (data.profileImg) {
+        formData.append("file", data.profileImg);
+      }
+
+      const res = (await updateFacultyData({id: facultyId,formData})) as TResponse<TFaculty>;
+      // console.log(res);
       if (res?.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
         toast.success(res?.data?.message, { id: toastId });
       }
-      console.log(res);
+      // console.log(res);
     } catch (error: any) {
       toast.error("Something went wrong", { id: toastId });
     }
 
-    console.log(Object.entries(formData));
+    // console.log(Object.entries(formData));
   };
 
   return (
     <Row>
       <Col span={24}>
-        <PHform onSubmit={onSubmit} defaultValues={data?.data}>
+        <PHform onSubmit={onSubmit} defaultValues={facultySingleData?.data}>
           <Divider>Personal</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -71,7 +84,7 @@ const FacultyUpdate = () => {
               <PHSelect label="Gender" name="gender" options={genderOptions} />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+              <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>

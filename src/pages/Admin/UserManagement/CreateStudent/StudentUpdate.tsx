@@ -14,33 +14,51 @@ import { toast } from "sonner";
 const StudentUpdate = () => {
      const { studentId:id } = useParams();
      const { data:studentData } = useGetSingleStudentQuery(id);
-    //  console.log('update student', data?.data)
+    //  console.log("update student", studentData?.data);
      const [updateStudent] = useUpdateStudentMutation();
       
       const onSubmit: SubmitHandler<FieldValues> = async(data) => {
-        //  const toastId = toast.loading("Updateing ...");
+         const toastId = toast.loading("Updateing ...");
+        //  console.log('profile img',data.profileImg)
+        const updateUserData = {
+          name: data.name,
+          gender: data.gender,
+          dateOfBirth: data.dateOfBirth,
+          email: data.email,
+          contactNo: data.contactNo,
+          emergencyContactNo: data.emergencyContactNo,
+          bloodGroup: data.bloodGroup,
+          presentAddress: data.presentAddress,
+          permanentAddress: data.permanentAddress,
+          guardian: data.guardian,
+          localGurdian: data.localGurdian,
+        };
+        
           const updateStudentData = {
-              student: data,
-            };
-            console.log(updateStudentData);
+            student: updateUserData,
+          };
+            console.log("update date", updateUserData);
         
         // updateStudent(formData);
-        // try {
-        //   console.log("update student data", updateStudentData);
-        //   const formData = new FormData();
-        //   formData.append("data", JSON.stringify(updateStudentData));
-        //   formData.append("file", data.profileImg);
-        //   const res = (await updateStudent({id, formData})) as TResponse<TStudent>;
-        //   console.log('res',res);
-        //   if (res?.error) {
-        //     toast.error(res?.error?.data?.message, { id: toastId });
-        //   } else {
-        //     toast.success(res?.data?.message, { id: toastId });
-        //   }
-        //   console.log(res);
-        // } catch (error: any) {
-        //   toast.error("Something went wrong", { id: toastId });
-        // }
+        try {
+          // console.log("update student data", updateStudentData);
+          const formData = new FormData();
+          formData.append("data", JSON.stringify(updateStudentData));
+          if (data.profileImg) {
+            formData.append("file", data.profileImg);
+          }
+          
+          const res = (await updateStudent({id, formData})) as TResponse<TStudent>;
+          // console.log('res',res);
+          if (res?.error) {
+            toast.error(res?.error?.data?.message, { id: toastId });
+          } else {
+            toast.success(res?.data?.message, { id: toastId });
+          }
+          // console.log(res);
+        } catch (error: any) {
+          toast.error("Something went wrong", { id: toastId });
+        }
 
         // console.log('update student data console',Object.entries(formData));
       };
@@ -85,7 +103,7 @@ const StudentUpdate = () => {
                   />
                 </Col>
                 <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-                  <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+                  <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
                 </Col>
                 <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
                   <PHSelect

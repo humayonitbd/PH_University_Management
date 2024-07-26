@@ -43,7 +43,7 @@ const adminDefaultValues = {
   },
   designation: "Professor",
   gender: "male",
-  dateOfBirth: "1980-01-01",
+ 
   email: "admin1@gmail.com",
   contactNo: "12345678910",
   emergencyContactNo: "0987654321",
@@ -125,7 +125,7 @@ const CreateAdmin = () => {
               <PHSelect label="Gender" name="gender" options={genderOptions} />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+              <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>

@@ -11,11 +11,16 @@ import { TQueryParams } from "../../../../types";
 import { TAdmin } from "../../../../types/userManagement.type";
 import { useGetAllAdminsQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Link } from "react-router-dom";
+import Modal from "../../../../components/ui/Modal";
+
 
 export type TTableData = Pick<
   TAdmin,
   "name" | "id" | "email" | "contactNo" | "_id"
->;
+> & {
+  status: string;
+  userId: string;
+};
 const Admins = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
   const [page, setPage] = useState(1);
@@ -33,13 +38,15 @@ const Admins = () => {
   const totalData = admins?.meta;
 
   const tableData = admins?.data?.map(
-    ({ _id, name, id, email, contactNo }) => ({
+    ({ _id, name, id, email, contactNo, user }) => ({
       key: _id,
       _id,
       name: `${name.firstName} ${name.middleName} ${name.lastName}`,
       id,
       email,
       contactNo,
+      status: user.status,
+      userId: user._id,
     })
   );
 
@@ -61,6 +68,10 @@ const Admins = () => {
       dataIndex: "contactNo",
     },
     {
+      title: "User Status",
+      dataIndex: "status",
+    },
+    {
       title: "Action",
       dataIndex: "x",
       render: (_, record) => {
@@ -73,7 +84,8 @@ const Admins = () => {
             <Link to={`/admin/admin-update/${record._id}`}>
               <Button>Update</Button>
             </Link>
-            <Button>Block</Button>
+            <Modal id={record.userId} />
+            
           </Space>
         );
       },

@@ -76,7 +76,7 @@ const CreateFaculty = () => {
     formData.append("file", data.profileImg);
   
     try {
-      console.log(facultyData);
+      console.log("create facultyData", facultyData);
       const res = (await addFacultyData(formData)) as TResponse<TFaculty>;
       console.log(res);
       if (res?.error) {
@@ -114,7 +114,7 @@ const CreateFaculty = () => {
               <PHSelect label="Gender" name="gender" options={genderOptions} />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+              <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>

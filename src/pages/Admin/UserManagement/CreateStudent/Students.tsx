@@ -1,13 +1,18 @@
 import { Button, Pagination, Space, Table, TableColumnsType, TableProps } from "antd";
-import { useGetAllSemestersQuery } from "../../../../redux/features/admin/AcademicManagementApi/AcademicManagementApi";
-import { TAcademicSemister } from "../../../../types/academicManagement.type";
 import { useState } from "react";
 import { TQueryParams } from "../../../../types";
 import { TStudent } from "../../../../types/userManagement.type";
 import { useGetAllStudentsQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Link } from "react-router-dom";
+import Modal from "../../../../components/ui/Modal";
 
-export type TTableData = Pick<TStudent, "fullName" | "id" | "email" | "contactNo" | "_id">;
+export type TTableData = Pick<
+  TStudent,
+  "fullName" | "id" | "email" | "contactNo" | "_id" 
+> & {
+  status: string;
+  userId: string;
+};
 const Students = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
   const [page,setPage] = useState(1);
@@ -23,15 +28,19 @@ const Students = () => {
   // console.log("Academic Semister", students);
 
   const totalData = students?.meta;
-
-  const tableData = students?.data?.map(({ _id, fullName, id, email,contactNo }) => ({
-    key: _id,
-    _id,
-    fullName,
-    id,
-    email,
-    contactNo
-  }));
+// console.log('students',students)
+  const tableData = students?.data?.map(
+    ({ _id, fullName, id, email, contactNo, user }) => ({
+      key: _id,
+      _id,
+      fullName,
+      id,
+      email,
+      contactNo,
+      status: user.status,
+      userId:user._id
+    })
+  );
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -51,10 +60,14 @@ const Students = () => {
       dataIndex: "contactNo",
     },
     {
+      title: "User Status",
+      dataIndex: "status",
+    },
+    {
       title: "Action",
       dataIndex: "x",
       render: (_, record) => {
-        console.log(record);
+        // console.log(record);
         return (
           <Space>
             <Link to={`/admin/student-data-list/${record._id}`}>
@@ -63,7 +76,7 @@ const Students = () => {
             <Link to={`/admin/student-update/${record._id}`}>
               <Button>Update</Button>
             </Link>
-            <Button>Block</Button>
+            <Modal id={record.userId} />
           </Space>
         );
       },

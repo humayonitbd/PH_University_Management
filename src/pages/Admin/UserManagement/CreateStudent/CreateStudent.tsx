@@ -23,9 +23,9 @@ const studentData = [
         lastName: "Doe",
       },
       gender: "male",
-      deteOfBirth: "2000-01-01",
+      dateOfBirth: "2000-01-01",
       bloodGroup: "A+",
-      
+
       email: "student2@gmail.com",
       contactNo: "123-456-7896",
       emergencyContactNo: "098-765-4323",
@@ -160,7 +160,7 @@ const CreateStudent = () => {
                 />
               </Col>
               <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-                <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+                <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
               </Col>
               <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
                 <PHSelect

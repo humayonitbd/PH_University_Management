@@ -67,7 +67,7 @@ export type TLocalGurdian = {
 export interface TFaculty {
   _id: string;
   id: string;
-  user: string;
+  user: TUser;
   name: Name;
   designation: string;
   gender: string;
@@ -113,7 +113,7 @@ export interface AcademicDepartment {
 export type TAdmin = {
   _id: string;
   id: string;
-  user: string;
+  user: TUser;
   name: TAName;
   designation: string;
   gender: string;
@@ -128,7 +128,7 @@ export type TAdmin = {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export type TAName ={
   firstName: string;

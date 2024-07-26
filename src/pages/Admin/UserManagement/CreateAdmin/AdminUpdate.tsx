@@ -21,18 +21,31 @@ const AdminUpdate = () => {
   const [updateAdminData] = useUpdateAdminMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data, "data");
     const toastId = toast.loading("Creating ...");
+    const upAdminData = {
+      name: data.name,
+      gender: data.gender,
+      designation: data.designation,
+      dateOfBirth: data.dateOfBirth,
+      email: data.email,
+      contactNo: data.contactNo,
+      emergencyContactNo: data.emergencyContactNo,
+      presentAddress: data.presentAddress,
+      permanentAddress: data.permanentAddress,
+    };
     const adminData = {
-      admin: data,
+      admin: upAdminData,
     };
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(adminData));
-    formData.append("file", data.profileImg);
+    
 
     try {
       console.log(adminData);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(adminData));
+      if (data.profileImg) {
+        formData.append("file", data.profileImg);
+      }
       const res = (await updateAdminData({
         id: adminId,
         formData,
@@ -48,7 +61,7 @@ const AdminUpdate = () => {
       toast.error("Something went wrong", { id: toastId });
     }
 
-    console.log(Object.entries(formData));
+    // console.log(Object.entries(formData));
   };
 
   return (
@@ -73,7 +86,7 @@ const AdminUpdate = () => {
               <PHSelect label="Gender" name="gender" options={genderOptions} />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="deteOfBirth" label="Date Of Birth" />
+              <PHDatePicker name="dateOfBirth" label="Date Of Birth" />
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>

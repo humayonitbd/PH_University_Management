@@ -9,14 +9,18 @@ import {
 } from "antd";
 import { useState } from "react";
 import { TQueryParams } from "../../../../types";
-import { TFaculty, TStudent } from "../../../../types/userManagement.type";
+import { TFaculty } from "../../../../types/userManagement.type";
 import { useGetAllFacultysQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Link } from "react-router-dom";
+import Modal from "../../../../components/ui/Modal";
 
 export type TTableData = Pick<
   TFaculty,
   "name" | "id" | "email" | "contactNo" | "_id"
->;
+> & {
+  status: string;
+  userId: string;
+};
 const Facultys = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
   const [page, setPage] = useState(1);
@@ -34,13 +38,15 @@ const Facultys = () => {
   const totalData = facultys?.meta;
 
   const tableData = facultys?.data?.map(
-    ({ _id, name, id, email, contactNo }) => ({
+    ({ _id, name, id, email, contactNo, user }) => ({
       key: _id,
       _id,
-      name:`${name.firstName} ${name.middleName} ${name.lastName}`,
+      name: `${name.firstName} ${name.middleName} ${name.lastName}`,
       id,
       email,
       contactNo,
+      status: user.status,
+      userId: user._id,
     })
   );
 
@@ -62,6 +68,10 @@ const Facultys = () => {
       dataIndex: "contactNo",
     },
     {
+      title: "User Status",
+      dataIndex: "status",
+    },
+    {
       title: "Action",
       dataIndex: "x",
       render: (_, record) => {
@@ -74,7 +84,7 @@ const Facultys = () => {
             <Link to={`/admin/faculty-update/${record._id}`}>
               <Button>Update</Button>
             </Link>
-            <Button>Block</Button>
+            <Modal id={record.userId} />
           </Space>
         );
       },
