@@ -14,12 +14,14 @@ import { TResponse } from "../../../../types";
 import { TAdmin } from "../../../../types/userManagement.type";
 import { useParams } from "react-router-dom";
 
+
 const AdminUpdate = () => {
     const { adminId } = useParams();
-    const { data} = useGetSingleAdminQuery(adminId);
-  console.log(data?.data);
+    const  {data, isLoading} = useGetSingleAdminQuery(adminId);
+    // const data = dataInfo;
+  console.log('update student data',data?.data);
   const [updateAdminData] = useUpdateAdminMutation();
-
+   
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Creating ...");
     const upAdminData = {
@@ -43,6 +45,7 @@ const AdminUpdate = () => {
       console.log(adminData);
       const formData = new FormData();
       formData.append("data", JSON.stringify(adminData));
+
       if (data.profileImg) {
         formData.append("file", data.profileImg);
       }
@@ -54,7 +57,7 @@ const AdminUpdate = () => {
       if (res?.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success(res?.data?.message, { id: toastId });
+        toast.success(res?.data?.message , { id: toastId });
       }
       console.log(res);
     } catch (error: any) {
@@ -63,6 +66,12 @@ const AdminUpdate = () => {
 
     // console.log(Object.entries(formData));
   };
+
+
+
+  if(isLoading){
+    return <div>Looding.....</div>
+  }
 
   return (
     <Row>

@@ -1,7 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleStudentQuery, useUpdateStudentMutation } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { Button, Col, Divider, Form, Input, Row } from "antd";
-import { SubmitHandler, FieldValues, Controller } from "react-hook-form";
+import {
+  SubmitHandler,
+  FieldValues,
+  Controller,
+} from "react-hook-form";
 import PHform from "../../../../components/form/PHform";
 import PHInput from "../../../../components/form/PHInput";
 import PHSelect from "../../../../components/form/PHSelect";
@@ -13,7 +17,7 @@ import { toast } from "sonner";
 
 const StudentUpdate = () => {
      const { studentId:id } = useParams();
-     const { data:studentData } = useGetSingleStudentQuery(id);
+     const { data: studentData, isLoading } = useGetSingleStudentQuery(id);
     //  console.log("update student", studentData?.data);
      const [updateStudent] = useUpdateStudentMutation();
       
@@ -62,6 +66,11 @@ const StudentUpdate = () => {
 
         // console.log('update student data console',Object.entries(formData));
       };
+
+
+      if (isLoading) {
+        return <div>Looding.....</div>;
+      }
     return (
       <div>
         <h4

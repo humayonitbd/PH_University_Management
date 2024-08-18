@@ -83,6 +83,7 @@ export interface TFaculty {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
+  fullName:string;
 }
 
 export interface Name {

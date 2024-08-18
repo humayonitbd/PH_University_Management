@@ -1,7 +1,12 @@
 import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PHInput from "../../../../components/form/PHInput";
 import PHform from "../../../../components/form/PHform";
-import { SubmitHandler, FieldValues, Controller } from "react-hook-form";
+import {
+  SubmitHandler,
+  FieldValues,
+  Controller,
+  
+} from "react-hook-form";
 import PHSelect from "../../../../components/form/PHSelect";
 import { genderOptions } from "../../../../constants/global";
 import PHDatePicker from "../../../../components/form/PHDatePicker";
@@ -14,10 +19,11 @@ import { useParams } from "react-router-dom";
 
 const FacultyUpdate = () => {
     const { facultyId } = useParams();
-    const { data:facultySingleData } = useGetSingleFacultyQuery(facultyId);
-    console.log("faculty single data", facultySingleData?.data?.dateOfBirth);
-  const [updateFacultyData,{data}] = useUpdateFacultyMutation();
-  console.log('update hoar por data', data)
+    const { data: facultySingleData, isLoading } =
+      useGetSingleFacultyQuery(facultyId);
+    // console.log("faculty single data", facultySingleData?.data?.dateOfBirth);
+  const [updateFacultyData] = useUpdateFacultyMutation();
+  // console.log('update hoar por data', data)
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log(data,'data')
     const toastId = toast.loading("Creating ...");
@@ -62,6 +68,9 @@ const FacultyUpdate = () => {
     // console.log(Object.entries(formData));
   };
 
+  if (isLoading) {
+    return <div>Looding.....</div>;
+  }
   return (
     <Row>
       <Col span={24}>

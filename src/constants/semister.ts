@@ -12,3 +12,18 @@ export const semisterOptions = [
     label: "Fall",
   },
 ];
+
+export const semisterStatusOptions = [
+  {
+    value: "UPCOMING",
+    label: "Upcoming",
+  },
+  {
+    value: "ONGOING",
+    label: "Ongoing",
+  },
+  {
+    value: "ENDED",
+    label: "Ended",
+  },
+];

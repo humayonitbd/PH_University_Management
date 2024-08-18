@@ -28,6 +28,7 @@ const PHform = ({
   if (defaultValues) {
     formConfig["defaultValues"] = defaultValues;
   }
+  ///zod validation er jonno kaj korse
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
