@@ -20,3 +20,21 @@ export type TCourse = {
   preRequisiteCourses: string;
   isDeleted: boolean;
 };
+
+
+export type TDays = "Sat" | "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri";
+
+export type TOfferedCourse = {
+  _id:string;
+  semisterRegistration: string;
+  academicsemister?: string;
+  academicFaculty: string;
+  academicDepartment: string;
+  course: TCourse;
+  faculty: string;
+  maxCapacity: number;
+  section: number;
+  days: TDays[];
+  startTime: string;
+  endTime: string;
+};
