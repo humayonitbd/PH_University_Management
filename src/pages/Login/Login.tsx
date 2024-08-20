@@ -19,9 +19,9 @@ const Login = () => {
   
 
   const defaultValues = {
-    id:'A-0001',
-    password:'admin123',
-  }
+    id: "2025010003",
+    password: "student123",
+  };
 
 
 

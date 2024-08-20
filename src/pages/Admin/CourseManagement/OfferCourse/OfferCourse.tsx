@@ -9,7 +9,7 @@ import PHSelectByWatch from "../../../../components/form/PHSelectByWatch";
 import PHDatePicker from "../../../../components/form/PHDatePicker";
 import PHInput from "../../../../components/form/PHInput";
 import {useState} from "react"
-import { useAddOfferedCoursMutation, useGetAllCourseQuery, useGetAllSemestersRegistrationQuery } from "../../../../redux/features/admin/CourseManagement/CourseManagement.api";
+import { useAddOfferedCoursMutation, useGetAllAssignCourseFacultyQuery, useGetAllCourseQuery, useGetAllSemestersRegistrationQuery } from "../../../../redux/features/admin/CourseManagement/CourseManagement.api";
 import { useGetAllFacultysQuery } from "../../../../redux/features/admin/UserManagementApi/UserManagementApi";
 import { daysOptions } from "../../../../constants/global";
 import PHTimePicker from "../../../../components/form/PHTimePicker";
@@ -17,12 +17,12 @@ import PHTimePicker from "../../../../components/form/PHTimePicker";
 
 
 const OfferCourse = () => {
-    const [id, setId] = useState();
+    const [courseId, setCourseId] = useState('');
   const { data: academicDepartments } = useGetAcademicDepartmentsQuery(undefined);
   const { data: academicFaculty } = useGetAcademicFacultiesQuery(undefined);
   const { data: semisterRegistrations } = useGetAllSemestersRegistrationQuery(undefined);
   const { data: courses } = useGetAllCourseQuery(undefined);
-  const { data: facultys } = useGetAllFacultysQuery(undefined);
+  const { data: courseAssignfacultys } = useGetAllAssignCourseFacultyQuery(courseId, {skip:!courseId});
   const academicDepartmentOptions = academicDepartments?.data?.map((item) => ({
     value: item._id,
     label: `${item.name}`,
@@ -41,9 +41,9 @@ const OfferCourse = () => {
     value: item._id,
     label: `${item.title}`,
   }));
-  const facultysOptions = facultys?.data?.map((item) => ({
+  const facultysOptions = courseAssignfacultys?.data?.faculties?.map((item:any) => ({
     value: item._id,
-    label: `${item.name.firstName} ${item.name.middleName} ${item.name.lastName}`,
+    label: `${item?.name?.firstName} ${item?.name?.middleName} ${item?.name?.lastName}`,
   }));
 
  
@@ -88,19 +88,23 @@ const OfferCourse = () => {
             name="academicFaculty"
             options={academicFacultyOptions}
           />
-          <PHSelectByWatch
-            onValueChange={setId}
+          <PHSelect
             label="Academic Department"
             name="academicDepartment"
             options={academicDepartmentOptions}
           />
-          <PHSelect
+          <PHSelectByWatch
+            onValueChange={setCourseId}
             label="Course"
-            disabled={!id}
             name="course"
             options={coursesOptions}
           />
-          <PHSelect label="Faculty" name="faculty" options={facultysOptions} />
+          <PHSelect
+            label="Faculty"
+            disabled={!courseId}
+            name="faculty"
+            options={facultysOptions}
+          />
           <PHInput label="Max Capacity" type="number" name="maxCapacity" />
           <PHInput label="Section" type="number" name="section" />
           <PHSelect
