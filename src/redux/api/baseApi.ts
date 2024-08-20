@@ -32,6 +32,9 @@ const baseQueryWithRefreshToken: BaseQueryFn<FetchArgs,BaseQueryApi,DefinitionTy
   if (result?.error?.status === 404) {
     toast.error(result?.error?.data?.message);
   }
+  if (result?.error?.status === 403) {
+    toast.error(result?.error?.data?.message);
+  }
   if (result?.error?.status === 401) {
     try {
       const res = await fetch(
@@ -63,7 +66,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<FetchArgs,BaseQueryApi,DefinitionTy
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["semisterRegister", "course"],
+  tagTypes: ["semisterRegister", "course","enrolledCourse"],
   endpoints: () => ({}),
 });
 

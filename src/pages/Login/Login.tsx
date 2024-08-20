@@ -19,8 +19,8 @@ const Login = () => {
   
 
   const defaultValues = {
-    id: "2025010003",
-    password: "student123",
+    id: "F-0002",
+    password: "faculty123",
   };
 
 
@@ -39,11 +39,21 @@ const Login = () => {
       const res = await login(userInfo).unwrap();
       const user = verifyToken(res?.data?.accessToken) as TUser;
       dispatch(setUser({ user: user, token: res?.data?.accessToken }));
-      toast.success('Login Successfull !!', {id:tostId, duration:2000 })
-      navigate(`/${user?.role}/dashboard`);
+      if(res.success){
+        toast.success("Login Successfull !!", { id: tostId, duration: 2000 });
+        if (res?.data?.needsPasswordChange) {
+          navigate(`/change-password`);
+        } else {
+          navigate(`/${user?.role}/dashboard`);
+        }
+      }else{
+         toast.error(`${res.data.message}`, { id: tostId, duration: 2000 });
+      }
       
-    } catch (error) {
-      toast.error("Something went wrong!", { id: tostId, duration: 2000 });
+      
+      
+    } catch (error:any) {
+      toast.error(`${error.data.message}`, { id: tostId, duration: 2000 });
     }
     
     
