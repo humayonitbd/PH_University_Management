@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFacultyAddMarkCourseMutation, useGetAllFacultyEnrolledCourseQuery  } from "../../../redux/features/faculty/facultyManagementApi";
 import PHform from "../../../components/form/PHform";
 import PHInput from "../../../components/form/PHInput";
+import { toast } from "sonner";
 
 const MyStudents = () => {
   const { registerSemisterId, courseId } = useParams();
@@ -15,11 +16,11 @@ const MyStudents = () => {
   console.log(facultyCoursesData);
 
   const tableData = facultyCoursesData?.data?.map(
-    ({ _id, student, semesterRegistration, offeredCourse }) => ({
+    ({ _id, student, semisterRegistration, offeredCourse }) => ({
       key: _id,
       name: student.fullName,
       roll: student.id,
-      semesterRegistration: semesterRegistration?._id,
+      semisterRegistration: semisterRegistration?._id,
       student: student?._id,
       offeredCourse: offeredCourse?._id,
     })
@@ -39,7 +40,7 @@ const MyStudents = () => {
     {
       title: "Action",
       key: "x",
-      render: (item) => {
+      render: (item:any) => {
         return (
           <div>
             <AddMarksModal studentInfo={item} />
@@ -52,14 +53,15 @@ const MyStudents = () => {
   return <Table columns={columns} dataSource={tableData} />;
 };
 
-const AddMarksModal = ({ studentInfo }) => {
+const AddMarksModal = ({ studentInfo }:any) => {
   console.log(studentInfo);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMark] = useFacultyAddMarkCourseMutation();
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (data:any) => {
+   const tostId= toast.loading('mark updateing..')
     const studentMark = {
-      semesterRegistration: studentInfo.semesterRegistration,
+      semisterRegistration: studentInfo.semisterRegistration,
       offeredCourse: studentInfo.offeredCourse,
       student: studentInfo.student,
       courseMarks: {
@@ -71,9 +73,22 @@ const AddMarksModal = ({ studentInfo }) => {
     };
 
     console.log(studentMark);
-    // const res = await addMark(studentMark);
+    
 
     // console.log(res);
+    try {
+      const res = await addMark(studentMark).unwrap();
+      if (res.success) {
+        toast.success(`${res.message}`, { id: tostId, duration: 2000 });
+      } else {
+        toast.error(`${res.data.message}`, { id: tostId, duration: 2000 });
+      }
+       handleCancel();
+    } catch (error:any) {
+      toast.error(`${error.data.message}`, { id: tostId, duration: 2000 });
+      handleCancel();
+    }
+    
   };
 
   const showModal = () => {
